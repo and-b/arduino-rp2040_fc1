@@ -6,6 +6,11 @@
 
 #define IMU_CALIBRATION_COUNT 2000
 
+/*
+    LSM6DS3 orientation:
+    USB port on the right
+*/
+
 #define LSM6DS3_ADDRESS            0x6A
 
 #define LSM6DS3_WHO_AM_I_REG       0X0F
@@ -167,8 +172,8 @@ void calculateAttitude() {
        accel_angle_roll = -asinf(accel_x / accel_total) * 57.295; // 180/PI
     }
 
-    accel_angle_pitch -= -1.2;
-    accel_angle_roll -= -1.1;
+    accel_angle_pitch -= 1.25;
+    accel_angle_roll -= 0.5;
     
     // apply complimentary filter
     angle_pitch = angle_pitch * 0.9996 + accel_angle_pitch * 0.0004;
