@@ -24,8 +24,12 @@ float roll_level_adjust, pitch_level_adjust;
 float accel_angle_pitch_calib = -1.35;
 float accel_angle_roll_calib = -1.13;
 
-PID pidRoll(1.3, 0.0, 18.0, 400);
-PID pidPitch(1.3, 0.0, 18.0, 400);
+// PID pidRoll(1.3, 0.0, 18.0, 400); primo volo, oscilla molto e velocemente ma resta fermo in aria
+// PID pidRoll(1.1, 0.0, 18.0, 400); secondo volo, meglio, ma dopo le manovre trema, proviamo ad alzare D
+// PID pidRoll(1.1, 0.0, 21.0, 400); peggio, i tremori sembrano maggiori, provo ad abbassare D
+// PID pidRoll(1.1, 0.0, 12.0, 400); i tremori sembrano diminuiti, abbasso ancora D
+PID pidRoll(1.1, 0.0, 10.0, 400);
+PID pidPitch(1.1, 0.0, 10.0, 400);
 PID pidYaw(3.5, 0.01, 0.0, 400);
 
 void setup() {
