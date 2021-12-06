@@ -6,6 +6,8 @@
 void calibrateESCs();
 void writeESCs(int micros);
 
+//#define CALIBRATE_ESC
+
 void setupMotor() {
     // PWM 0A - pin D4 - GPIO16 - slice 0 - CHAN A
     // PWM 0B - pin D5 - GPIO17 - slice 0 - CHAN B
@@ -17,11 +19,11 @@ void setupMotor() {
     gpio_set_function(19, GPIO_FUNC_PWM);
     
     // clock is 125Mhz, so 1 tick is 8 nanoseconds. I want a cycle of 1 micro, so the clock divider is 125
-    pwm_set_clkdiv(0, 125);
+    pwm_set_clkdiv(0, 125); // 25 for oneshot125 (200 nanos)
     pwm_set_clkdiv(1, 125);
     
     // this is the maximum counter (16 bit 0-65535). set period of 2040 micros, 490.19 Hz
-    pwm_set_wrap(0, 2039);
+    pwm_set_wrap(0, 2039); // 1299 for oneshot125 (260 micros)
     pwm_set_wrap(1, 2039);
     
     pwm_set_chan_level(0, PWM_CHAN_A, STOP_PULSE); // GPIO16
@@ -61,7 +63,7 @@ void writeESCs(int micros) {
 }
 
 void sendToESCs() {
-    pwm_set_chan_level(0, PWM_CHAN_A, motorFrontLeftCW); // D4
+    pwm_set_chan_level(0, PWM_CHAN_A, motorFrontLeftCW); // D4 *0.625 for oneshot125 (125ms to 250ms)
     pwm_set_chan_level(0, PWM_CHAN_B, motorFrontRightCCW); // D5
     pwm_set_chan_level(1, PWM_CHAN_A, motorRearRightCW); // D6
     pwm_set_chan_level(1, PWM_CHAN_B, motorRearLeftCCW); // D7
